@@ -59,7 +59,8 @@ export default function ConfirmationPage() {
       } else {
         throw new Error(result.error)
       }
-    } catch {
+    } catch (err) {
+      console.error('Barcode generation error:', err)
       setError('Failed to generate QR code. Please try again.')
     } finally {
       setIsLoading(false)
