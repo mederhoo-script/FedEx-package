@@ -79,7 +79,7 @@ export default function EligibilityPage() {
       }
     } catch (err) {
       console.error('Eligibility validation error:', err)
-      setApiError('Server error. Please try again in 30 seconds.')
+      setApiError('Server error. Please try again later.')
     } finally {
       setIsSubmitting(false)
     }

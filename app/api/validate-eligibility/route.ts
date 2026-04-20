@@ -61,9 +61,6 @@ export async function POST(request: NextRequest) {
     // All users are eligible
     const userId = generateUserId()
 
-    // Log only non-PII data
-    console.log(`Eligibility check: state=${state}, timestamp=${new Date().toISOString()}`)
-
     return NextResponse.json({
       eligible: true,
       state,

@@ -12,7 +12,7 @@ export const eligibilityFormSchema = z.object({
     .transform((val) => val.toLowerCase()),
   phone: z
     .string()
-    .regex(/^(\+?234|0)[0-9]{9,10}$/, 'Please enter a valid phone number (e.g. +2348012345678 or 08012345678)'),
+    .regex(/^(\+234[0-9]{10}|0[0-9]{10})$/, 'Please enter a valid phone number (e.g. +2348012345678 or 08012345678)'),
   address: z
     .string()
     .min(10, 'Address must be at least 10 characters')

@@ -9,9 +9,7 @@ export async function GET(request: NextRequest) {
     const ip = forwarded ? forwarded.split(',')[0].trim() : '0.0.0.0'
 
     // Use ip-api.com for free geolocation (no key required for basic use)
-    const geoResponse = await fetch(`https://ip-api.com/json/${ip}?fields=status,country,regionName,city`, {
-      next: { revalidate: 300 }, // Cache 5 minutes
-    })
+    const geoResponse = await fetch(`https://ip-api.com/json/${ip}?fields=status,country,regionName,city`)
 
     if (geoResponse.ok) {
       const geoData = await geoResponse.json()

@@ -38,7 +38,7 @@ export default function HomePage() {
         <section className="py-12 sm:py-16 lg:py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
-            <div className="animate-fade-in" style={{ animationDelay: '0.1s', opacity: 0 }}>
+            <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
               <div className="inline-flex items-center gap-2 bg-fedex-purple/10 text-fedex-purple px-3 py-1.5 rounded-full text-sm font-body font-semibold mb-6">
                 <div className="w-2 h-2 bg-fedex-success rounded-full animate-pulse" />
                 Limited Distribution Active
@@ -72,7 +72,7 @@ export default function HomePage() {
             </div>
 
             {/* Hero Graphic */}
-            <div className="flex justify-center animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
+            <div className="flex justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <div className="relative">
                 <div className="w-64 h-64 sm:w-80 sm:h-80 bg-fedex-purple/10 rounded-full flex items-center justify-center animate-bounce-gentle">
                   <div className="w-48 h-48 sm:w-60 sm:h-60 bg-fedex-purple/20 rounded-full flex items-center justify-center">
@@ -104,7 +104,7 @@ export default function HomePage() {
         </section>
 
         {/* Trust Section */}
-        <section className="py-12 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
+        <section className="py-12 animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               {
@@ -133,12 +133,12 @@ export default function HomePage() {
         </section>
 
         {/* Location Detection Banner */}
-        <section className="py-6 animate-fade-in" style={{ animationDelay: '0.7s', opacity: 0 }}>
+        <section className="py-6 animate-fade-in" style={{ animationDelay: '0.7s' }}>
           <LocationDetector onLocationDetected={handleLocationDetected} />
         </section>
 
         {/* Legal Disclaimer */}
-        <section className="py-6 mb-12 animate-fade-in" style={{ animationDelay: '0.9s', opacity: 0 }}>
+        <section className="py-6 mb-12 animate-fade-in" style={{ animationDelay: '0.9s' }}>
           <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
             <p className="font-body text-xs text-gray-500 leading-relaxed text-center">
               🔒 <strong>Privacy Notice:</strong> We collect your name, address, and contact information solely for package distribution verification. Your data is used ONLY for package delivery purposes and is automatically deleted after 24 hours. We comply with GDPR and applicable privacy regulations.

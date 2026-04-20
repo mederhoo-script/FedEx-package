@@ -98,7 +98,7 @@ export default function ConfirmationPage() {
       link.href = canvas.toDataURL('image/png')
       link.click()
     }
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData)
+    img.src = 'data:image/svg+xml;base64,' + Buffer.from(svgData).toString('base64')
   }
 
   if (isLoading) {
@@ -163,7 +163,7 @@ export default function ConfirmationPage() {
         </div>
 
         {/* QR Code Card */}
-        <div className="card mb-6 animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0 }}>
+        <div className="card mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <h3 className="font-display font-bold text-xl text-fedex-dark mb-1 text-center">
             Your Collection Code
           </h3>
@@ -188,7 +188,7 @@ export default function ConfirmationPage() {
         </div>
 
         {/* Summary Card */}
-        <div className="card mb-6 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0 }}>
+        <div className="card mb-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <h3 className="font-display font-bold text-lg text-fedex-dark mb-4">
             Distribution Summary
           </h3>
@@ -212,7 +212,7 @@ export default function ConfirmationPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.6s', opacity: 0 }}>
+        <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.6s' }}>
           <button
             onClick={handleWhatsApp}
             className="btn-whatsapp w-full flex items-center justify-center gap-2 py-4 text-base"
