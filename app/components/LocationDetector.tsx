@@ -14,13 +14,9 @@ interface LocationDetectorProps {
 }
 
 export default function LocationDetector({ onLocationDetected }: LocationDetectorProps) {
-  const [status, setStatus] = useState<'idle' | 'detecting' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'detecting' | 'success' | 'error'>('detecting')
   const [location, setLocation] = useState<LocationData | null>(null)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    detectLocation()
-  }, [])
 
   const detectLocation = async () => {
     setStatus('detecting')
@@ -42,6 +38,27 @@ export default function LocationDetector({ onLocationDetected }: LocationDetecto
       setError('Could not detect location automatically.')
     }
   }
+
+  // `onLocationDetected` is excluded from deps intentionally:
+  // we only want to detect location once on mount.
+  // `data` in confirmation/page is similarly stable (lazy init, no setter).
+  useEffect(() => {
+    fetch('/api/location')
+      .then((response) => {
+        if (!response.ok) throw new Error('Location detection failed')
+        return response.json()
+      })
+      .then((locationData: LocationData) => {
+        setLocation(locationData)
+        setStatus('success')
+        onLocationDetected(locationData)
+      })
+      .catch(() => {
+        setStatus('error')
+        setError('Could not detect location automatically.')
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="border-l-4 border-fedex-purple bg-white rounded-xl shadow-card p-5">

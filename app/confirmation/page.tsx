@@ -21,23 +21,15 @@ interface EligibilityData {
 export default function ConfirmationPage() {
   const router = useRouter()
   const qrRef = useRef<HTMLDivElement>(null)
-  const [data, setData] = useState<EligibilityData | null>(null)
+  const [data] = useState<EligibilityData | null>(() => {
+    if (typeof window === 'undefined') return null
+    const stored = sessionStorage.getItem('eligibilityData')
+    return stored ? (JSON.parse(stored) as EligibilityData) : null
+  })
   const [barcodeData, setBarcodeData] = useState<Record<string, unknown> | null>(null)
   const [qrValue, setQrValue] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const stored = sessionStorage.getItem('eligibilityData')
-    if (!stored) {
-      router.push('/')
-      return
-    }
-
-    const parsed: EligibilityData = JSON.parse(stored)
-    setData(parsed)
-    generateBarcode(parsed)
-  }, [router])
 
   const generateBarcode = async (userData: EligibilityData) => {
     try {
@@ -66,6 +58,39 @@ export default function ConfirmationPage() {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (!data) {
+      router.push('/')
+      return
+    }
+    const body = JSON.stringify({
+      userId: data.userId,
+      fullName: data.fullName,
+      address: data.address,
+      state: data.state,
+    })
+    fetch('/api/generate-barcode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+      .then((response) => {
+        return response.json().then((result: { barcodeData: Record<string, unknown>; base64QR: string; error?: string }) => {
+          if (!response.ok) throw new Error(result.error ?? 'Unknown error')
+          setBarcodeData(result.barcodeData)
+          setQrValue(result.base64QR)
+        })
+      })
+      .catch((err: unknown) => {
+        console.error('Barcode generation error:', err)
+        setError('Failed to generate QR code. Please try again.')
+      })
+      .finally(() => setIsLoading(false))
+  // `data` is from a lazy state initializer and is never reassigned,
+  // so it is intentionally excluded from the dependency array.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
 
   const handleWhatsApp = () => {
     if (!data) return

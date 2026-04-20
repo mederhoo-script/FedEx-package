@@ -14,11 +14,9 @@ interface LocationData {
 
 export default function HomePage() {
   const router = useRouter()
-  const [location, setLocation] = useState<LocationData | null>(null)
   const [isNavigating, setIsNavigating] = useState(false)
 
   const handleLocationDetected = (loc: LocationData) => {
-    setLocation(loc)
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('detectedLocation', JSON.stringify(loc))
     }
