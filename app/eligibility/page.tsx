@@ -78,8 +78,11 @@ export default function EligibilityPage() {
         <div className="card">
           <div className="mb-6">
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-fedex-dark mb-2">
-              Check Your Eligibility Status
+              Discover if your address qualifies — check your eligibility status today!
             </h2>
+            <p className="font-body text-sm text-gray-500 mb-3">
+              Check your address below.
+            </p>
             {detectedState && (
               <p className="font-body text-sm text-fedex-success">
                 📍 {detectedState} • <span className="text-fedex-success font-semibold">Eligible</span>
@@ -144,7 +147,7 @@ export default function EligibilityPage() {
               <textarea
                 {...register('address')}
                 rows={3}
-                placeholder="123 Main Street, City, State"
+                placeholder="Full address /municipality"
                 disabled={isSubmitting}
                 className={`input-field resize-none ${errors.address ? 'border-fedex-error focus:border-fedex-error' : ''}`}
               />

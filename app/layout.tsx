@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Footer from './components/Footer'
 
 export const metadata: Metadata = {
   title: 'FedEx Package Distribution',
@@ -16,8 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white">
+      <body className="min-h-screen bg-white flex flex-col">
         {children}
+        <Footer />
       </body>
     </html>
   )
