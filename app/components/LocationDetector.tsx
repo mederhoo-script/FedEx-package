@@ -9,8 +9,40 @@ interface LocationData {
   eligible: boolean
 }
 
+interface IpApiResponse {
+  status: string
+  regionName?: string
+  city?: string
+  country?: string
+}
+
 interface LocationDetectorProps {
   onLocationDetected: (location: LocationData) => void
+}
+
+async function fetchLocationFromBrowser(): Promise<LocationData> {
+  // Call ip-api.com directly from the browser so it sees the real client IP
+  // (including any active VPN). Falls back to the Next.js proxy route if blocked.
+  try {
+    const res = await fetch('https://ip-api.com/json/?fields=status,country,regionName,city')
+    if (res.ok) {
+      const data: IpApiResponse = await res.json()
+      if (data.status === 'success') {
+        return {
+          state: data.regionName || 'Unknown',
+          city: data.city || 'Unknown',
+          country: data.country || 'Unknown',
+          eligible: true,
+        }
+      }
+    }
+  } catch {
+    // fall through to server-side proxy
+  }
+  // Server-side proxy fallback
+  const proxyRes = await fetch('/api/location')
+  if (!proxyRes.ok) throw new Error('Location detection failed')
+  return proxyRes.json()
 }
 
 export default function LocationDetector({ onLocationDetected }: LocationDetectorProps) {
@@ -18,40 +50,27 @@ export default function LocationDetector({ onLocationDetected }: LocationDetecto
   const [location, setLocation] = useState<LocationData | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const detectLocation = async () => {
+  const detectLocation = () => {
     setStatus('detecting')
     setError(null)
-
-    try {
-      // Try IP-based detection
-      const response = await fetch('/api/location')
-      if (response.ok) {
-        const data = await response.json()
+    fetchLocationFromBrowser()
+      .then((data) => {
         setLocation(data)
         setStatus('success')
         onLocationDetected(data)
-      } else {
-        throw new Error('Location detection failed')
-      }
-    } catch {
-      setStatus('error')
-      setError('Could not detect location automatically.')
-    }
+      })
+      .catch(() => {
+        setStatus('error')
+        setError('Could not detect location automatically.')
+      })
   }
 
-  // `onLocationDetected` is excluded from deps intentionally:
-  // we only want to detect location once on mount.
-  // `data` in confirmation/page is similarly stable (lazy init, no setter).
   useEffect(() => {
-    fetch('/api/location')
-      .then((response) => {
-        if (!response.ok) throw new Error('Location detection failed')
-        return response.json()
-      })
-      .then((locationData: LocationData) => {
-        setLocation(locationData)
+    fetchLocationFromBrowser()
+      .then((data) => {
+        setLocation(data)
         setStatus('success')
-        onLocationDetected(locationData)
+        onLocationDetected(data)
       })
       .catch(() => {
         setStatus('error')

@@ -3,22 +3,10 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckCircle, AlertCircle, Loader2, ChevronDown } from 'lucide-react'
+import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import Header from '../components/Header'
 import StepIndicator from '../components/StepIndicator'
 import { eligibilityFormSchema, type EligibilityFormData } from '../utils/validation'
-
-const STATES = [
-  'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
-  'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT - Abuja',
-  'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi',
-  'Kwara', 'Lagos', 'Nassarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo',
-  'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara',
-  // International states/regions
-  'California', 'New York', 'Texas', 'Florida', 'Illinois',
-  'London', 'Manchester', 'Birmingham',
-  'Other'
-]
 
 export default function EligibilityPage() {
   const router = useRouter()
@@ -41,14 +29,10 @@ export default function EligibilityPage() {
       const stored = sessionStorage.getItem('detectedLocation')
       if (stored) {
         const loc = JSON.parse(stored)
-        setDetectedState(loc.state || '')
-        // Try to match state in list
-        const matchedState = STATES.find(s => 
-          s.toLowerCase().includes((loc.state || '').toLowerCase()) ||
-          (loc.state || '').toLowerCase().includes(s.toLowerCase())
-        )
-        if (matchedState) {
-          setValue('state', matchedState)
+        const stateValue = loc.state || ''
+        setDetectedState(stateValue)
+        if (stateValue) {
+          setValue('state', stateValue)
         }
       }
     }
@@ -85,8 +69,6 @@ export default function EligibilityPage() {
     }
   }
 
-  const watchState = watch('state')
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-fedex-light">
       <Header />
@@ -96,7 +78,7 @@ export default function EligibilityPage() {
         <div className="card">
           <div className="mb-6">
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-fedex-dark mb-2">
-              Complete Your Details
+              Check Your Eligibility Status
             </h2>
             {detectedState && (
               <p className="font-body text-sm text-fedex-success">
@@ -154,24 +136,6 @@ export default function EligibilityPage() {
               )}
             </div>
 
-            {/* Phone */}
-            <div>
-              <label className="block font-display font-bold text-sm text-fedex-dark mb-1.5">
-                Phone Number <span className="text-fedex-error">*</span>
-              </label>
-              <input
-                {...register('phone')}
-                type="tel"
-                placeholder="+2348012345678 or 08012345678"
-                disabled={isSubmitting}
-                className={`input-field ${errors.phone ? 'border-fedex-error focus:border-fedex-error' : ''}`}
-              />
-              {errors.phone && (
-                <p className="mt-1 text-xs text-fedex-error font-body italic">{errors.phone.message}</p>
-              )}
-              <p className="mt-1 text-xs text-gray-400 font-body italic">Format: +234XXXXXXXXXX or 0XXXXXXXXXX</p>
-            </div>
-
             {/* Address */}
             <div>
               <label className="block font-display font-bold text-sm text-fedex-dark mb-1.5">
@@ -192,24 +156,18 @@ export default function EligibilityPage() {
               </p>
             </div>
 
-            {/* State */}
+            {/* State / Region */}
             <div>
               <label className="block font-display font-bold text-sm text-fedex-dark mb-1.5">
                 State / Region <span className="text-fedex-error">*</span>
               </label>
-              <div className="relative">
-                <select
-                  {...register('state')}
-                  disabled={isSubmitting}
-                  className={`input-field appearance-none pr-10 ${errors.state ? 'border-fedex-error' : ''} ${watchState ? 'text-fedex-dark' : 'text-gray-400'}`}
-                >
-                  <option value="">Select your state</option>
-                  {STATES.map((state) => (
-                    <option key={state} value={state}>{state}</option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-              </div>
+              <input
+                {...register('state')}
+                type="text"
+                placeholder="e.g. Lagos, California, London"
+                disabled={isSubmitting}
+                className={`input-field ${errors.state ? 'border-fedex-error focus:border-fedex-error' : ''}`}
+              />
               {errors.state && (
                 <p className="mt-1 text-xs text-fedex-error font-body italic">{errors.state.message}</p>
               )}

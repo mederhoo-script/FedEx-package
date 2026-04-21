@@ -4,7 +4,6 @@ import { z } from 'zod'
 const requestSchema = z.object({
   fullName: z.string().min(2).max(50),
   email: z.string().email(),
-  phone: z.string().min(10).max(15),
   address: z.string().min(10).max(200),
   state: z.string().min(1),
 })
