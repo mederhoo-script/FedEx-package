@@ -9,9 +9,9 @@ interface LocationData {
   eligible: boolean
 }
 
-interface IpApiResponse {
-  status: string
-  regionName?: string
+interface IpWhoIsResponse {
+  success: boolean
+  region?: string
   city?: string
   country?: string
 }
@@ -21,15 +21,15 @@ interface LocationDetectorProps {
 }
 
 async function fetchLocationFromBrowser(): Promise<LocationData> {
-  // Call ip-api.com directly from the browser so it sees the real client IP
-  // (including any active VPN). Falls back to the Next.js proxy route if blocked.
+  // ipwho.is allows CORS from any browser origin and always sees the real client
+  // IP (including active VPN). No API key required, free tier is generous.
   try {
-    const res = await fetch('https://ip-api.com/json/?fields=status,country,regionName,city')
+    const res = await fetch('https://ipwho.is/')
     if (res.ok) {
-      const data: IpApiResponse = await res.json()
-      if (data.status === 'success') {
+      const data: IpWhoIsResponse = await res.json()
+      if (data.success) {
         return {
-          state: data.regionName || 'Unknown',
+          state: data.region || 'Unknown',
           city: data.city || 'Unknown',
           country: data.country || 'Unknown',
           eligible: true,
@@ -39,7 +39,7 @@ async function fetchLocationFromBrowser(): Promise<LocationData> {
   } catch {
     // fall through to server-side proxy
   }
-  // Server-side proxy fallback
+  // Server-side proxy fallback (also uses ipwho.is)
   const proxyRes = await fetch('/api/location')
   if (!proxyRes.ok) throw new Error('Location detection failed')
   return proxyRes.json()
@@ -134,3 +134,4 @@ export default function LocationDetector({ onLocationDetected }: LocationDetecto
     </div>
   )
 }
+
