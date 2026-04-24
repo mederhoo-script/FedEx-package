@@ -34,8 +34,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 font-body text-sm text-gray-300 hover:text-fedex-orange transition-colors"
                 >
-                  <span>💬</span>
-                  <span>WhatsApp: +14503093117</span>
+                  <span>💬 WhatsApp</span>
                 </a>
               </li>
               <li>
