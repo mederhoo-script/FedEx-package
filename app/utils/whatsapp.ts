@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '2348034295030'
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '14503093117'
 
 export function generateWhatsAppMessage(
   name: string,
