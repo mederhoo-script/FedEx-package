@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
-import { CheckCircle, Download, Home, MessageCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { CheckCircle, Download, Home, MessageCircle, AlertCircle, Loader2, Phone, Mail } from 'lucide-react'
 import Header from '../components/Header'
 import StepIndicator from '../components/StepIndicator'
 import { generateWhatsAppMessage, getWhatsAppUrl } from '../utils/whatsapp'
@@ -245,6 +245,20 @@ export default function ConfirmationPage() {
             <MessageCircle className="w-5 h-5" />
             Confirm through WhatsApp
           </button>
+          <a
+            href="tel:+13264675425"
+            className="btn-primary w-full flex items-center justify-center gap-2 py-4 text-base"
+          >
+            <Phone className="w-5 h-5" />
+            Confirm through Phone
+          </a>
+          <a
+            href="mailto:Familyfedexpackage@gmail.com"
+            className="btn-secondary w-full flex items-center justify-center gap-2 py-4 text-base"
+          >
+            <Mail className="w-5 h-5" />
+            Confirm through Email
+          </a>
           <button
             onClick={handleDownload}
             className="btn-secondary w-full flex items-center justify-center gap-2 py-4 text-base"

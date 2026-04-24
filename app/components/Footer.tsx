@@ -29,31 +29,31 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="https://wa.me/12345678900"
+                  href="https://wa.me/14503093117"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 font-body text-sm text-gray-300 hover:text-fedex-orange transition-colors"
                 >
                   <span>💬</span>
-                  <span>WhatsApp: +1 (234) 567-8900</span>
+                  <span>WhatsApp: +14503093117</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:+12345678900"
+                  href="tel:+13264675426"
                   className="flex items-center gap-2 font-body text-sm text-gray-300 hover:text-fedex-orange transition-colors"
                 >
                   <span>📞</span>
-                  <span>+1 (234) 567-8900</span>
+                  <span>+13264675426</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:support@fedex-distribution.com"
+                  href="mailto:Familyfedexpackage@gmail.com"
                   className="flex items-center gap-2 font-body text-sm text-gray-300 hover:text-fedex-orange transition-colors"
                 >
                   <span>✉️</span>
-                  <span>support@fedex-distribution.com</span>
+                  <span>Familyfedexpackage@gmail.com</span>
                 </a>
               </li>
             </ul>
